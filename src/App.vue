@@ -80,14 +80,14 @@ const removeItem = (index) => {
       </form>
     </div>
 
-    <div class="wrapper">
+    <div v-if="todos.length > 0" class="wrapper">
       <div class="ps-2 pe-2">
         <div class="form-floating form-group flex-fill">
           <input class="form-control" id="search" v-model="searchText" placeholder="What to do?" />
           <label for="search">Search tasks...</label>
         </div>
       </div>
-      <div v-if="todos.length > 0" id="todo-app">
+      <div id="todo-app">
         <div style="margin: 20px">
           <table class="table table-striped">
             <tbody>
