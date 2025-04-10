@@ -1,10 +1,18 @@
 <script setup>
 import { onMounted, ref, onUnmounted } from 'vue'
 import { watch } from 'vue'
+import { computed } from 'vue'
 
 const todoText = ref('')
 const weekday = ref(new Date().toString().slice(0, 3))
 const todos = ref([])
+const searchText = ref('')
+
+const filteredTodos = computed(() => {
+  return todos.value.filter((todo) =>
+    todo.text.toLowerCase().includes(searchText.value.toLowerCase()),
+  )
+})
 
 watch(
   todos,
@@ -72,12 +80,18 @@ const removeItem = (index) => {
       </form>
     </div>
 
-    <div v-if="todos.length > 0" class="wrapper">
-      <div id="todo-app">
+    <div class="wrapper">
+      <div class="ps-2 pe-2">
+        <div class="form-floating form-group flex-fill">
+          <input class="form-control" id="search" v-model="searchText" placeholder="What to do?" />
+          <label for="search">Search tasks...</label>
+        </div>
+      </div>
+      <div v-if="todos.length > 0" id="todo-app">
         <div style="margin: 20px">
           <table class="table table-striped">
             <tbody>
-              <tr v-for="(todo, index) in todos" :key="todo.id">
+              <tr v-for="(todo, index) in filteredTodos" :key="todo.id">
                 <td>
                   <input type="checkbox" :checked="todo.completed" @change="toggleDone(index)" />
                 </td>
